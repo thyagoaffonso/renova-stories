@@ -30,7 +30,7 @@ async function createContainer(params) {
   const res = await http({
     method: 'POST',
     url: `https://graph.facebook.com/${GV}/${ig}/media`,
-    qs: { ...params, access_token: token },
+    qs: { ...params, access_token: token }, json: true,
   });
   return asObj(res);
 }
@@ -38,7 +38,7 @@ async function pollFinished(cid, label) {
   for (let i = 0; i < 30; i++) {
     const st = asObj(await http({
       method: 'GET', url: `https://graph.facebook.com/${GV}/${cid}`,
-      qs: { fields: 'status_code', access_token: token },
+      qs: { fields: 'status_code', access_token: token }, json: true,
     }));
     if (st.status_code === 'FINISHED') return true;
     if (st.status_code === 'ERROR' || st.status_code === 'EXPIRED') {
@@ -51,7 +51,7 @@ async function pollFinished(cid, label) {
 async function publish(cid) {
   const res = await http({
     method: 'POST', url: `https://graph.facebook.com/${GV}/${ig}/media_publish`,
-    qs: { creation_id: cid, access_token: token },
+    qs: { creation_id: cid, access_token: token }, json: true,
   });
   return asObj(res);
 }
